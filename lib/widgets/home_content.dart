@@ -20,7 +20,7 @@ class HomeContent extends StatelessWidget {
         final section = sections[index];
 
         // Get the appropriate title for each section type
-        final sectionTitle = _getSectionTitle(section.type);
+        final sectionTitle = getSectionTitle(section.type);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class HomeContent extends StatelessWidget {
     }
   }
 
-  String? _getSectionTitle(String type) {
+  String? getSectionTitle(String type) {
     switch (type) {
       case 'banner':
         return 'Banner';

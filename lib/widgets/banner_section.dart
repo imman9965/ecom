@@ -14,28 +14,28 @@ class BannerSection extends StatefulWidget {
 }
 
 class _BannerSectionState extends State<BannerSection> {
-  late PageController _pageController;
-  int _currentPage = 0;
-  Timer? _timer;
+  late PageController pageController;
+  int currentPage = 0;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    pageController = PageController(initialPage: 0);
     if (widget.banners.isNotEmpty) {
-      _startAutoScroll();
+      startAutoScroll();
     }
   }
 
-  void _startAutoScroll() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
-      if (_currentPage < widget.banners.length - 1) {
-        _currentPage++;
+  void startAutoScroll() {
+    timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (currentPage < widget.banners.length - 1) {
+        currentPage++;
       } else {
-        _currentPage = 0;
+        currentPage = 0;
       }
-      _pageController.animateToPage(
-        _currentPage,
+      pageController.animateToPage(
+        currentPage,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -44,8 +44,8 @@ class _BannerSectionState extends State<BannerSection> {
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _pageController.dispose();
+    timer?.cancel();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -71,16 +71,16 @@ class _BannerSectionState extends State<BannerSection> {
       height: height,
       child:
           widget.banners.isEmpty
-              ? _buildShimmer()
+              ? shimmer()
               : Column(
                 children: [
                   Expanded(
                     child: PageView.builder(
-                      controller: _pageController,
+                      controller: pageController,
                       itemCount: widget.banners.length,
                       onPageChanged: (index) {
                         setState(() {
-                          _currentPage = index;
+                          currentPage = index;
                         });
                       },
                       itemBuilder: (context, index) {
@@ -152,7 +152,7 @@ class _BannerSectionState extends State<BannerSection> {
     );
   }
 
-  Widget _buildShimmer() {
+  Widget shimmer() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,

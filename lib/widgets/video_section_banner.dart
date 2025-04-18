@@ -13,28 +13,28 @@ class VideoBannerSection extends StatefulWidget {
 }
 
 class _VideoBannerSectionState extends State<VideoBannerSection> {
-  late VideoPlayerController _controller;
-  bool _isInitialized = false;
+  late VideoPlayerController controller;
+  bool isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.videos[0]['video_url'])
+    controller = VideoPlayerController.network(widget.videos[0]['video_url'])
       ..initialize()
           .then((_) {
             if (mounted) {
               setState(() {
-                _controller.setVolume(0);
-                _controller.setLooping(true);
-                _controller.play();
-                _isInitialized = true;
+                controller.setVolume(0);
+                controller.setLooping(true);
+                controller.play();
+                isInitialized = true;
               });
             }
           })
           .catchError((error) {
             if (mounted) {
               setState(() {
-                _isInitialized = false;
+                isInitialized = false;
               });
             }
           });
@@ -42,7 +42,7 @@ class _VideoBannerSectionState extends State<VideoBannerSection> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class _VideoBannerSectionState extends State<VideoBannerSection> {
       desktop: 16,
     );
 
-    if (!_isInitialized) {
+    if (!isInitialized) {
       return Shimmer.fromColors(
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.grey[100]!,
@@ -106,9 +106,9 @@ class _VideoBannerSectionState extends State<VideoBannerSection> {
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: SizedBox(
-                    width: _controller.value.size.width,
-                    height: _controller.value.size.height,
-                    child: VideoPlayer(_controller),
+                    width: controller.value.size.width,
+                    height: controller.value.size.height,
+                    child: VideoPlayer(controller),
                   ),
                 ),
               ),
@@ -116,7 +116,7 @@ class _VideoBannerSectionState extends State<VideoBannerSection> {
                 child: Center(
                   child: IconButton(
                     icon: Icon(
-                      _controller.value.isPlaying
+                      controller.value.isPlaying
                           ? Icons.pause
                           : Icons.play_arrow,
                       color: Colors.white.withOpacity(0.8),
@@ -129,9 +129,9 @@ class _VideoBannerSectionState extends State<VideoBannerSection> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
+                        controller.value.isPlaying
+                            ? controller.pause()
+                            : controller.play();
                       });
                     },
                   ),
